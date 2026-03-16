@@ -1,0 +1,47 @@
+# =============================================================================
+# BlueWatch — Windows Process & Service Monitoring Agent
+# requirements.txt
+# =============================================================================
+#
+# Install all dependencies:
+#   pip install -r requirements.txt
+#
+# Minimum Python version: 3.10+
+# Recommended:            3.12+
+#
+# =============================================================================
+
+# ── Core (required) ───────────────────────────────────────────────────────────
+
+# Cross-platform process and system utilities.
+# Used for: process enumeration, PID/PPID/exe/cmdline/username/create_time metadata.
+# Docs: https://psutil.readthedocs.io/
+psutil>=5.9.0
+
+# ── Windows service enumeration (optional but recommended on Windows) ─────────
+
+# Windows Management Instrumentation (WMI) Python wrapper.
+# Used for: Win32_Service queries — richer than sc.exe (binary path, start mode).
+# Falls back to sc.exe automatically if not installed.
+# Windows only — do not install on Linux/macOS.
+# Docs: https://pypi.org/project/wmi/
+wmi>=1.5.1; sys_platform == "win32"
+
+# COM bridge required by the wmi library on Windows.
+# Not imported directly by BlueWatch.
+# Windows only.
+# Docs: https://pypi.org/project/pywin32/
+pywin32>=306; sys_platform == "win32"
+
+# ── Standard library (no install needed) ─────────────────────────────────────
+# The following stdlib modules are used and require no installation:
+#
+#   re          — regex patterns for typosquat / encoded-PS detection
+#   subprocess  — sc.exe fallback for service enumeration
+#   json        — JSON report output (alert_logger.save_json)
+#   csv         — CSV report output (alert_logger.save_csv)
+#   datetime    — ISO-8601 alert timestamps, report filenames
+#   os          — directory creation, path joins
+#   argparse    — CLI argument parsing (--watch, --out, --no-services)
+#   time        — continuous monitoring sleep interval
+#   typing      — type hints (Optional)
